@@ -16,34 +16,12 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
-
-function GameObject(attributes) {
-  this.name = attributes.name;
-  this.createdAt = attributes.createdAt;
-  this.dimensions = attributes.dimensions;
-}
-
-GameObject.prototype.destroy = function() {
-  return `${this.name} was removed from the game.`;
-};
-
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-
-function CharacterStats(attributes) {
-  GameObject.call(this, attributes);
-  this.healthPoints = attributes.healthPoints;
-};
-
-CharacterStats.prototype = Object.create(GameObject.prototype);
-CharacterStats.prototype.takeDamage = function() {
-  return `${this.name} took damage.`
-};
-
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -54,9 +32,38 @@ CharacterStats.prototype.takeDamage = function() {
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+
+/*
+  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
+  * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
+  * Instances of CharacterStats should have all of the same properties as GameObject.
+*/
+
+// GameObject
+function GameObject(attributes) {
+  this.name = attributes.name;
+  this.createdAt = attributes.createdAt;
+  this.dimensions = attributes.dimensions;
+};
+
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`;
+};
+
+// CharacterStats
+function CharacterStats(attributes) {
+  GameObject.call(this, attributes);
+  this.healthPoints = attributes.healthPoints;
+};
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+};
+
+// Humanoid
 function Humanoid(attributes) {
-  CharacterStats.call(this, attributes)
+  CharacterStats.call(this, attributes);
   this.team = attributes.team;
   this.weapons = attributes.weapons;
   this.language = attributes.language;
@@ -65,13 +72,47 @@ function Humanoid(attributes) {
 Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function() {
   return `${this.name} offers a greeting in ${this.language}.`
+};
+
+// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+// * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+// Hero
+function Hero(attributes) {
+  Humanoid.call(this, attributes);
+  this.name = attributes.name;
+  this.weapon = attributes.weapon;
+};
+
+Hero.prototype = Object.create(Humanoid.prototype);
+Hero.prototype.slap = function() {
+  return `${this.name} just slapped you with great force.`;
+};
+Hero.prototype.powerSit = function() {
+  return `You are suffocating because ${this.name} just sat on you.`
+};
+Hero.prototype.revival = function() {
+  return `Death was close, but revival occurred for ${this.name}.`
 }
 
-/*
-  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
-  * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
-  * Instances of CharacterStats should have all of the same properties as GameObject.
-*/
+// Villain
+function Villain(attributes) {
+  Humanoid.call(this, attributes);
+  this.name = attributes.name;
+  this.weapon = attributes.weapon;
+};
+
+Villain.prototype = Object.create(Humanoid.prototype);
+Villain.prototype.block = function() {
+  return `Whatever happened didn't happen because ${this.name} blocked it.`;
+};
+Villain.prototype.attack = function() {
+  return `${this.name} is coming at you with a ${this.weapon}.`
+};
+Villain.prototype.tearGas = function() {
+  return `${this.name} dropped something in the air; now you are crying.`
+}
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
