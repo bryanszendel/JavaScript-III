@@ -82,7 +82,7 @@ Humanoid.prototype.greet = function() {
 function Hero(attributes) {
   Humanoid.call(this, attributes);
   this.name = attributes.name;
-  this.weapon = attributes.weapon;
+  this.weapons = attributes.weapons;
 };
 
 Hero.prototype = Object.create(Humanoid.prototype);
@@ -94,24 +94,30 @@ Hero.prototype.powerSit = function() {
 };
 Hero.prototype.revival = function() {
   return `Death was close, but revival occurred for ${this.name}.`
-}
+};
+Hero.prototype.victoryDance = function() {
+  return `${this.name} wins and writes some smashing hits!`
+};
 
 // Villain
 function Villain(attributes) {
   Humanoid.call(this, attributes);
   this.name = attributes.name;
-  this.weapon = attributes.weapon;
+  this.weapons = attributes.weapons;
 };
 
 Villain.prototype = Object.create(Humanoid.prototype);
 Villain.prototype.block = function() {
   return `Whatever happened didn't happen because ${this.name} blocked it.`;
 };
-Villain.prototype.attack = function() {
-  return `${this.name} is coming at you with a ${this.weapon}.`
+Villain.prototype.attack = function(weapon1, weapon2) {
+  return `${this.name} is coming at you with ${this.weapons[weapon1]} and ${this.weapons[weapon2]}.`
 };
-Villain.prototype.tearGas = function() {
-  return `${this.name} dropped something in the air; now you are crying.`
+Villain.prototype.tearGas = function(weapon) {
+  return `${this.name} dropped ${this.weapons[weapon]} in the air vents; now you are crying.`
+}
+Villain.prototype.standOff = function() {
+  return `${this.name} enters the room to take you down.`
 }
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
@@ -166,6 +172,40 @@ Villain.prototype.tearGas = function() {
     language: 'Elvish',
   });
 
+  const johnny = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 3,
+      width: 3,
+      height: 4,
+    },
+    healthPoints: 150,
+    name: 'Johnny Cash',
+    team: 'His Own Team',
+    weapons: [
+      'determination',
+      'powerful words',
+    ],
+    language: 'Good Country English'
+  });
+
+  const depression = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 10,
+      width: 10,
+      height: 10,
+    },
+    healthPoints: 150,
+    name: 'Depression',
+    team: 'Team Taking Over',
+    weapons: [
+      'whisky',
+      'isolation',
+    ],
+    language: 'the language of destroyed dreams'
+  })
+
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
@@ -179,6 +219,26 @@ Villain.prototype.tearGas = function() {
 
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // COMPLETE * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-  // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  // COMPLETE * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  console.log(johnny.createdAt);
+  console.log(johnny.greet());
+  console.log(depression.standOff());
+  console.log(johnny.slap());
+  console.log(depression.attack(0,1));
+  console.log(depression.tearGas(0));
+  console.log(depression.tearGas(1));
+  console.log(johnny.slap());
+  console.log(depression.block());
+  console.log(johnny.revival());
+  console.log(johnny.powerSit());
+  console.log(johnny.slap());
+  console.log(johnny.slap());
+  console.log(johnny.slap());
+  console.log(johnny.slap());
+  console.log(johnny.slap());
+  console.log(johnny.slap());
+  console.log(depression.destroy());
+  console.log(johnny.victoryDance());
